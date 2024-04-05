@@ -38,6 +38,7 @@ func main() {
 			Type:      "new-device",
 			Timestamp: time.Now(),
 			Meta:      map[string]string{},
+			Payload:   NewDeviceEventPayload{},
 		}
 	})
 	er.Register(newDeviceEventType)
