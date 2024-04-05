@@ -3,7 +3,7 @@ package registry
 import (
 	"encoding/json"
 
-	keystore "github.com/lucacox/event-sourcing/key-store"
+	"github.com/lucacox/event-sourcing/keystore"
 )
 
 type JsonCodec struct {

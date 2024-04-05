@@ -5,8 +5,9 @@ import (
 	"time"
 
 	"github.com/lucacox/event-sourcing/backend"
-	keystore "github.com/lucacox/event-sourcing/key-store"
+	"github.com/lucacox/event-sourcing/keystore"
 	"github.com/lucacox/event-sourcing/registry"
+	"github.com/lucacox/event-sourcing/store"
 )
 
 type NewDeviceEventPayload struct {
@@ -29,7 +30,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	es := NewEventStore("test", natsBE, er, 0)
+	es := store.NewEventStore("test", natsBE, er, 0)
 	defer natsBE.Close()
 
 	newDeviceEventType := registry.NewEventType("new-device", registry.NewJsonCodec(ks), func() *registry.Event {
