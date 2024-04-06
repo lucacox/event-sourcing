@@ -1,0 +1,15 @@
+services:
+  nats:
+    image: nats:2.10.11
+    command: -c /etc/config/nats/server.conf
+    ports:
+      - "4222:4222"
+      - "6222:6222"
+      - "8222:8222"
+    volumes:
+      - nats:/data
+      - ./nats-server.conf:/etc/config/nats/server.conf:ro
+
+volumes:
+  nats:
+
