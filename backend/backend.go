@@ -9,9 +9,15 @@ import (
 type Backend interface {
 	Connect() error
 	Close() error
-	Setup(storeName string, replicas int) error
-	Save(events []*registry.Event, expectedSequence uint64) (uint64, error)
-	Load() ([]*registry.Event, error)
+	SetEventRegistry(*registry.EventRegistry)
+	Setup(string, int) error
+	Save([]*registry.Event, uint64) (uint64, error)
+	// returns all events in the store in a map of entity id to events
+	Load() (map[string]*registry.Event, error)
+	// returns all events for a given entity id
+	LoadByEntityId(string) ([]*registry.Event, error)
+	// returns all events for a given event type
+	LoadByEventType(string) ([]*registry.Event, error)
 }
 
 type ErrWrongSequence struct {
