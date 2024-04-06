@@ -1,11 +1,11 @@
 package registry
 
 type EventType struct {
-	Name  string
-	Codec Codec
-	Init  func() *Event
+	Name      string
+	CodecName string
+	Init      func() *Event
 }
 
-func NewEventType(name string, codec Codec, init func() *Event) *EventType {
-	return &EventType{Name: name, Codec: codec, Init: init}
+func NewEventType(name string, codecName string, init func() *Event) *EventType {
+	return &EventType{Name: name, CodecName: codecName, Init: init}
 }

@@ -1,11 +1,17 @@
 package registry
 
+import "github.com/google/uuid"
+
 type EventRegistry struct {
-	types map[string]*EventType
+	types  map[string]*EventType
+	codecs map[string]Codec
 }
 
 func NewEventRegistry() *EventRegistry {
-	return &EventRegistry{types: make(map[string]*EventType)}
+	return &EventRegistry{
+		types:  make(map[string]*EventType),
+		codecs: make(map[string]Codec),
+	}
 }
 
 func (er *EventRegistry) Register(et *EventType) {
@@ -21,5 +27,16 @@ func (er *EventRegistry) NewEvent(name string) *Event {
 	if et == nil {
 		return nil
 	}
-	return et.Init()
+	evt := et.Init()
+	evt.Id = uuid.New().String()
+	evt.Registry = er
+	return evt
+}
+
+func (er *EventRegistry) RegisterCodec(codec Codec) {
+	er.codecs[codec.Name()] = codec
+}
+
+func (er *EventRegistry) GetCodec(name string) Codec {
+	return er.codecs[name]
 }
