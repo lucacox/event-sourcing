@@ -73,7 +73,7 @@ func main() {
 		Connection:      "nats://localhost:4222",
 		DefaultReplicas: 1,
 	})
-	es := store.NewEventStore("devices", natsBE, er, registry.NewJsonCodec(ks), 0)
+	es := store.NewEventStore("devices", natsBE, er, 0)
 	err := es.Start()
 	if err != nil {
 		panic(err)

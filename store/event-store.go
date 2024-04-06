@@ -6,16 +6,15 @@ import (
 )
 
 type EventStore struct {
-	name  string
-	be    backend.Backend
-	er    *registry.EventRegistry
-	rf    int
-	codec registry.Codec
+	name string
+	be   backend.Backend
+	er   *registry.EventRegistry
+	rf   int
 }
 
-func NewEventStore(name string, be backend.Backend, er *registry.EventRegistry, codec registry.Codec, replicationFactor int) *EventStore {
+func NewEventStore(name string, be backend.Backend, er *registry.EventRegistry, replicationFactor int) *EventStore {
 	be.SetEventRegistry(er)
-	return &EventStore{name: name, be: be, er: er, rf: replicationFactor, codec: codec}
+	return &EventStore{name: name, be: be, er: er, rf: replicationFactor}
 }
 
 // Start connects to the backend and sets up the store
