@@ -122,48 +122,68 @@ For a full example check the `example` directory.
 The EventRegostry holds all known EventTypes. Its used to create new event instances. 
 
 #### `func NewEventRegistry() *EventRegistry`
-
 This is the EventRegistry constructor.
 
 #### `func (er *EventRegistry) Register(et *EventType)`
-
 This will register a new EventType in the registry.
 
 #### `func (er *EventRegistry) GetType(name string) *EventType`
-
-Returns a registered EventType by its name.
+Returns a registered EventType by its unique name.
 
 #### `func (er *EventRegistry) NewEvent(name string) *Event`
-
 Create a new isntance of the specified event calling `EventType.Init()` function.
 
 #### `func (er *EventRegistry) RegisterCodec(codec Codec)`
-
 Register a Codec instance in the registry.
 
 #### `func (er *EventRegistry) GetCodec(name string) Codec`
-
 Returns a registered codec instance.
 
 --- 
 
 ### EventType
 
-TODO
+#### `func NewEventType(name string, codecName string, init func() *Event) *EventType`
+This is the constructor for an EventType. `name` is the unique name of the event type, 
+`codecName` is the name of the Codec to be associated with this type and `init` is the
+event instance initialization function, used to set event default values.
 
 ---
 
 ### Event
 
-TODO
+#### `func (e *Event) EncryptPayload(key []byte) error`
+This function will encrypt the event payload using AES256-CBC with the specified `key`
+
+#### `func (e *Event) DecryptPayload(key []byte) error`
+This function will decrypt the event payload using AES256-CBC with the specified `key`
+
+#### `func (e *Event) Serialize() ([]byte, error)`
+This function will serialize the event according to the Codec associated with its EventType.
+
+#### `func (e *Event) Deserialize(data []byte) error`
+This function will deserialize the `data` into the event according to the Codec associated with its EventType.
 
 ---
 
 ### Codec
 
-TODO
+This interface define methods for a Codec, used to serialize and deserialize events.
 
 #### JSONCodec
+
+#### `func NewJsonCodec(ks keystore.KeyStore) *JsonCodec`
+JSON Codec constructor, if `ks` is not nil it will be used to get AES Keys to encrypt
+events payload.
+
+#### `func (jc *JsonCodec) Name() string`
+Returns the name of the codec: "JSON Codec".
+
+#### `func (jc *JsonCodec) Decode(data []byte, target *Event) error`
+Deserialize `data` into `target`.
+
+#### `func (jc *JsonCodec) Encode(e *Event) ([]byte, error)`
+Serialize `e` into a byte array.
 
 ---
 
