@@ -163,7 +163,7 @@ func (n *NATSBackend) LoadByEntityId(id string) ([]*registry.Event, error) {
 		codecName := msg.Headers().Get("Codec")
 
 		event := n.er.NewEvent(etype)
-		n.er.GetCodec(codecName).Decode(msg.Data(), event)
+		err = n.er.GetCodec(codecName).Decode(msg.Data(), event)
 		if err != nil {
 			return nil, err
 		}
