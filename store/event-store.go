@@ -13,6 +13,9 @@ type EventStore struct {
 }
 
 func NewEventStore(name string, be backend.Backend, er *registry.EventRegistry, replicationFactor int) *EventStore {
+	if be == nil || er == nil {
+		return nil
+	}
 	be.SetEventRegistry(er)
 	return &EventStore{name: name, be: be, er: er, rf: replicationFactor}
 }
@@ -28,7 +31,7 @@ func (es *EventStore) Start() error {
 
 // Stop closes the connection to the backend
 func (es *EventStore) Stop() error {
-	if es.be != nil {
+	if es != nil && es.be != nil {
 		return es.be.Close()
 	}
 	return nil
